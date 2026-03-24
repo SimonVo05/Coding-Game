@@ -51,3 +51,6 @@ A space themed coding adventure built with C# and Blazor. Players guide a cat as
 
 ## 👥 Team
 - Created by Jim's Angels for Crimson Hackathon 2025.
+
+## 📹 Demo
+https://github.com/user-attachments/assets/9e7e85cc-ff41-47d6-8ca5-0e3bf12ea49f
