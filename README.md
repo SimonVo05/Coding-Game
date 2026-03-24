@@ -36,10 +36,10 @@ A space themed coding adventure built with C# and Blazor. Players guide a cat as
 
 ---
 
-⌨️ Controls
-Left Arrow or A to move left
-Right Arrow or D to move right
-Space to jump
+## ⌨️ Controls
+- Left Arrow or A to move left
+- Right Arrow or D to move right
+- Space to jump
 
 ---
 
