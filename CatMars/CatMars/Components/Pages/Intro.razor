@@ -1,0 +1,57 @@
+﻿@page "/"
+@rendermode InteractiveServer
+
+
+@if (titlePhase == true)
+{
+    <div class="title-screen">
+        <h1 class="title">CATSTRONAUT: JOURNEY TO MARS</h1>
+        <button class="title-button" @onclick="StartAnimation">Start Adventure</button>
+    </div>
+}
+else {
+    <div class="star-wars-intro">
+        <div class="fade"></div>
+        <section class="star-wars">
+            <div class="crawl">
+                <div class="title">
+                    <p>Episode I</p>
+                    <h1>CATSTRONAUT: JOURNEY TO MARS</h1>
+                </div>
+                <p>
+                    The astronaut and their brave space cat were on a mission to explore Mars,
+                    but during the trip, an accident occurred when their ship hit an asteroid.
+                    Now the astronaut is unconscious, and it’s up to the clever little cat to save the mission.
+                </p>
+                <p>With courage and curiosity, the cat must <strong>debug the ship’s systems</strong>,
+                    fix the broken controls, and get them safely back on course to Mars.
+                </p>
+            </div>
+        </section>
+    </div>
+
+    @if (animationCompleted)
+    {
+        <div class="continue-container">
+            <a class="continue-btn" href="/move" onclick="window.location.assign(this.href); return false;">
+                Continue
+            </a>
+        </div>
+    }
+}
+
+
+@code{
+    private bool titlePhase = true;
+    private bool animationCompleted = false;
+
+    public async Task StartAnimation()
+    {
+        titlePhase = false;
+        StateHasChanged();
+
+        await Task.Delay(5000);
+        animationCompleted = true;
+        StateHasChanged();
+    }
+}

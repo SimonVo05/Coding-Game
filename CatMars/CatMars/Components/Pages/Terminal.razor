@@ -1,0 +1,295 @@
+﻿@page "/terminal"
+@using System.Text.RegularExpressions
+@using System.Diagnostics
+@inject NavigationManager Nav
+@rendermode InteractiveServer
+
+<div class="terminal-wrap">
+    <div class="screen">
+        <h2 class="challenge-title">@Stages[StageIndex].Title</h2>
+        <p class="challenge-desc">@Stages[StageIndex].Description</p>
+
+        <label class="label">OxygenCalculator.cs</label>
+        <textarea class="codearea" spellcheck="false" @bind="Code" @bind:event="oninput"></textarea>
+
+        <div class="actions">
+            <button class="btn" @onclick="CheckCode">Check Code</button>
+            @if (!Passed)
+            {
+                <span class="indicator indicatorfail">@IndicatorText</span>
+            }
+            else
+            {
+                <span class="indicator indicatorok">@IndicatorText</span>
+                <button class="btn" style="margin-left:8px" @onclick="NextStage">Next Stage ▶</button>
+                @if (IsLastStage)
+                {
+                    <span class="indicator indicatorok" style="margin-left:8px;">🎉 All challenges complete!</span>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    private class Stage
+    {
+        public string Title { get; set; } = "";
+        public string Description { get; set; } = "";
+        public string ExpectedCode { get; set; } = "";
+        public string StarterCode { get; set; } = "";
+    }
+
+    private List<Stage> Stages = new()
+    {
+        new Stage
+        {
+            Title = "Challenge 1: Fix the Loop Bound",
+            Description = "The oxygen calculator loops seems to have an extra iteration...",
+            StarterCode =
+@"public static int OxygenNeeded(List<int> crewRates)
+{
+    int total = 0;
+    for (int i = 0; i <= crewRates.Count; i++)
+    {
+        total += crewRates[i];
+    }
+    return total;
+}",
+            ExpectedCode =
+@"public static int OxygenNeeded(List<int> crewRates)
+{
+    int total = 0;
+    for (int i = 0; i < crewRates.Count; i++) // fixed
+    {
+        total += crewRates[i];
+    }
+    return total;
+}"
+        },
+
+new Stage
+{
+    Title = "Challenge 2: Battery Recharging System",
+    Description = "The rover’s battery log has both charging and discharging values. Calculate total net charge, but ignore small fluctuations (|value| < 2).",
+    StarterCode =
+@"public static int CalculateNetCharge(List<int> readings)
+{
+    int total = 0;
+    foreach (var r in readings)
+    {
+    // TODO: ignore small fluctuations (< 2)
+            total += r;
+    }
+    return total;
+}",
+
+    ExpectedCode =
+@"public static int CalculateNetCharge(List<int> readings)
+{
+    int total = 0;
+    foreach (var r in readings)
+    {
+        if (Math.Abs(r) >= 2)
+            total += r;
+    }
+    return total;
+}"
+},
+
+        new Stage
+        {
+            Title = "Challenge 3: Binary Search Bug",
+            Description = "Autopilot needs a star’s catalog index. But something seems to be off.",
+            StarterCode =
+@"function findIndex(arr, target) {
+  let lo = 0, hi = arr.length - 1;
+  while (lo <= hi) {
+    const mid = Math.floor((lo + hi) / 2);
+    if (arr[mid] === target) return mid;
+    if (arr[mid] < target) lo = mid;   // BUG
+    else hi = mid;                      // BUG
+  }
+  return -1;
+}",
+            ExpectedCode =
+@"function findIndex(arr, target) {
+  let lo = 0, hi = arr.length - 1;
+  while (lo <= hi) {
+    const mid = Math.floor((lo + hi) / 2);
+    if (arr[mid] === target) return mid;
+    if (arr[mid] < target) lo = mid + 1;   // BUG
+    else hi = mid - 1;                      // BUG
+  }
+  return -1;
+}"
+        } };
+
+    private int StageIndex = 0;
+    private bool Passed = false;
+    private string IndicatorText = "Checks failing: Fix needed";
+    private string Code = "";
+    private bool IsLastStage => StageIndex >= Stages.Count - 1;
+
+    protected override void OnInitialized()
+    {
+        Code = Stages[StageIndex].StarterCode;
+    }
+
+    private static string Normalize(string text)
+    {
+        // Remove comments and whitespace for fair comparison
+        var noComments = Regex.Replace(text, @"//.*", "");
+        var noSpaces = Regex.Replace(noComments, @"\s+", "");
+        return noSpaces;
+    }
+
+    private void CheckCode()
+    {
+        var cleanInput = Normalize(Code);
+        var cleanExpected = Normalize(Stages[StageIndex].ExpectedCode);
+
+        Passed = cleanInput == cleanExpected;
+        IndicatorText = Passed ? "All checks passed" : "Checks failing: Fix needed";
+    }
+
+    private void NextStage()
+    {
+        if (!IsLastStage && Passed)
+        {
+            StageIndex++;
+            Code = Stages[StageIndex].StarterCode;
+            Passed = false;
+            IndicatorText = "Checks failing: Fix needed";
+        }
+        else if (IsLastStage && Passed)
+        {
+            // navigate to win
+            Nav.NavigateTo("/mars-landing");
+        }
+    }
+}
+
+<style>
+    body {
+        background-image: url('/images/cute.png');
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
+        background-attachment: fixed;
+        background-color: #1d5068;
+        margin: 0;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    .terminal-wrap {
+        zoom: 0.7;
+        position: absolute;
+        top: 40%;
+        left: 52%;
+        transform: translate(-50%, -50%);
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+
+    .screen {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        color: #e8eef8;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+        height: 430px;
+        width: 500px;
+        background: transparent;
+        padding: 12px;
+        border-radius: 8px;
+    }
+
+
+    .challenge-title {
+        margin: 0;
+        font-size: clamp(16px, 2.2vw, 22px);
+        font-weight: 700;
+    }
+
+    .challenge-desc {
+        margin: 0 0 4px 0;
+        font-size: clamp(12px, 1.6vw, 15px);
+        opacity: 0.9;
+    }
+
+    .label {
+        font-size: 12px;
+        opacity: 0.8;
+    }
+
+    .codearea {
+        flex: 1 1 auto;
+        min-height: 140px;
+        resize: none;
+        border: 1px solid #2a355d;
+        border-radius: 8px;
+        background: #06080f;
+        color: #eaeef8;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: clamp(11px, 1.5vw, 14px);
+        line-height: 1.45;
+        padding: 10px 12px;
+        outline: none;
+    }
+
+    .actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .btn {
+        background: #1b2650;
+        border: 1px solid #2e4181;
+        color: #eaeef8;
+        font-size: .8rem;
+        border-radius: 8px;
+        margin: 0;
+        padding: 8px 12px;
+        cursor: pointer;
+    }
+
+
+        .btn:hover {
+            background: #223064;
+        }
+
+    .indicator {
+        font-size: 13px;
+        padding: 4px 8px;
+        border-radius: 999px;
+        border: 1px solid #3a466e;
+        background: #0e1430;
+        min-width: 120px;
+        text-align: center;
+    }
+
+    .indicatorok {
+        background: #0f2413;
+        border-color: #244a2e;
+        color: #a6f2ae;
+    }
+
+    .indicatorfail {
+        background: #2a1515;
+        border-color: #5a2a2a;
+        color: #ff9a9a;
+    }
+</style>

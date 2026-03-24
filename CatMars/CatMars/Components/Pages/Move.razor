@@ -1,0 +1,39 @@
+@page "/move"
+
+<PageTitle>Cat Movement Game</PageTitle>
+
+<div class="cockpit-page">
+    <div class="overlay">
+        <div class="game-area">
+            <canvas id="gameCanvas" width="800" height="600"></canvas>
+
+            <a id="startLink" class="start-link" href="/terminal" style="display:none;opacity:0;">Start Coding</a>
+
+            <div class="controls-info">
+                <h3>Controls</h3>
+                <div class="control-item">
+                    <span class="key">←</span> or <span class="key">A</span> - Move Left
+                </div>
+                <div class="control-item">
+                    <span class="key">→</span> or <span class="key">D</span> - Move Right
+                </div>
+                <div class="control-item">
+                    <span class="key">Space</span> - Jump
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const canvas = document.getElementById('gameCanvas');
+        if (canvas) {
+            import('./js/moveCanvas.js').then(module => {
+                module.init(canvas);
+            }).catch(err => {
+                console.error('Failed to load game module:', err);
+            });
+        }
+    });
+</script>

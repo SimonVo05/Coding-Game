@@ -1,0 +1,127 @@
+/* Scoped only to Intro.razor */
+
+.star-wars-intro {
+    background: black;
+    color: #ffe81f;
+    overflow: hidden;
+    font-family: 'Press Start 2P', monospace;
+}
+
+.star-wars-intro h1,
+.star-wars-intro p {
+    font-size: 4rem;
+}
+
+.star-wars {
+    position: relative;
+    height: 100vh;
+    perspective: 400px;
+    overflow: hidden;
+}
+
+.crawl {
+    position: absolute;
+    bottom: -10;
+    width: 90%;
+    left: 5%;
+    transform-origin: 50% 100%;
+    animation: crawl 15s linear forwards;
+}
+
+@keyframes crawl {
+    0% {
+        bottom: -100vh;
+        transform: rotateX(20deg) translateZ(0);
+    }
+
+    100% {
+        bottom: 100vh;
+        transform: rotateX(25deg) translateZ(-300px);
+    }
+}
+
+.fade {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 50vh;
+    background: linear-gradient(0deg, transparent, black 80%);
+}
+.continue-container {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 1000;
+}
+
+/* NavLink (anchor) reset + styling */
+.continue-btn {
+    display: inline-block;
+    background: transparent;
+    color: #ffe81f !important; /* force yellow text */
+    font-weight: bold;
+    font-family: 'Press Start 2P', monospace; /* same as crawl */
+    border: 2px solid #ffe81f; /* subtle outline to make it visible */
+    border-radius: 8px;
+    padding: 10px 18px;
+    font-size: 0.9rem;
+    text-decoration: none !important; /* kill underline */
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    text-shadow: 0 0 8px rgba(255, 232, 31, 0.7);
+}
+
+    /* hover + active (brighter glow, subtle zoom) */
+    .continue-btn:hover,
+    .continue-btn.active {
+        color: #fff !important;
+        border-color: #fff;
+        transform: scale(1.05);
+        text-shadow: 0 0 15px rgba(255, 255, 255, 0.9);
+    }
+
+    /* remove browser purple visited link color */
+    .continue-btn:visited {
+        color: #ffe81f !important;
+        text-decoration: none;
+    }
+
+.title-screen {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -200px;
+    margin-left: -200px;
+    width: 400px;
+    height: 400px;
+    text-align: center;
+}
+
+.title {
+    font-size: 3rem;
+    text-align: center;
+    color: #ffe81f;
+    font-family: 'Press Start 2P', monospace;
+}
+
+.title-button {
+    font-size: 1.5rem;
+    padding: 10px 20px;
+    background-color: transparent;
+    border: 2px solid #ffe81f;
+    border-radius: 5px;
+    color: #ffe81f;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.title-button:hover {
+    background-color: #ffe81f;
+    color: black;
+}
+
+body{
+    margin: 0;
+    padding: 0;
+    background-color: black;
+}

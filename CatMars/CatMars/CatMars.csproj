@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\CatMars.Client\CatMars.Client.csproj" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="9.0.8" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Models\" />
+      <Folder Include="wwwroot\images\OrangeTabby_Free_Carysaurus\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="Components\Pages\Move.razor.js">
+        <DependentUpon>Move.razor</DependentUpon>
+      </None>
+    </ItemGroup>
+
+</Project>
