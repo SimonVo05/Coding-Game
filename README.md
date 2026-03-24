@@ -44,10 +44,10 @@ A space themed coding adventure built with C# and Blazor. Players guide a cat as
 ---
 
 ## 🚦 Running the Project
-Clone the repository  
-Install dependencies
-Run the project 
-Open the local host link shown in the terminal in your browser
+- Clone the repository  
+- Install dependencies
+- Run the project 
+- Open the local host link shown in the terminal in your browser
 
-👥 Team
-Created by Jim's Angels for Crimson Hackathon 2025.
+## 👥 Team
+- Created by Jim's Angels for Crimson Hackathon 2025.
