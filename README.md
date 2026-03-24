@@ -26,13 +26,13 @@ A space themed coding adventure built with C# and Blazor. Players guide a cat as
 
 ---
 
-🎮 How to play
--Start the adventure from the title screen
--Move the cat through the platform section
--Reach the next area to begin the coding challenges
--Fix the broken code in each stage
--Complete all challenges to finish the mission
--Land on Mars and win the game
+## 🎮 How to play
+- Start the adventure from the title screen
+- Move the cat through the platform section
+- Reach the next area to begin the coding challenges
+- Fix the broken code in each stage
+- Complete all challenges to finish the mission
+- Land on Mars and win the game
 
 ---
 
